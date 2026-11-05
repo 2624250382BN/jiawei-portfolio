@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>罗嘉伟 · LUO JIAWEI — 游戏开发 / 3D / 虚拟现实作品集</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+    font-family: "Inter", system-ui, sans-serif;
+    background:#0c0e14;
+    color:#e6e8f0;
+    line-height:1.7;
+}
+.container{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 24px;
+}
+/* 头部Hero区域 */
+.hero{
+    min-height:90vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-top:60px;
+    padding-bottom:80px;
+}
+.hero-tag{
+    color:#60a5fa;
+    font-size:14px;
+    letter-spacing:1px;
+    margin-bottom:12px;
+    text-transform:uppercase;
+}
+.hero h1{
+    font-size:clamp(2.4rem,5vw,4rem);
+    line-height:1.2;
+    margin-bottom:20px;
+}
+.hero h1 br{display:block;}
+.hero-desc{
+    font-size:18px;
+    max-width:700px;
+    color:#b0b8cc;
+    margin-bottom:28px;
+}
+.hero-meta{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:16px;
+    margin-bottom:32px;
+}
+.meta-item strong{color:#fff;display:block;font-size:15px;}
+.meta-item span{color:#8892b0;font-size:14px;}
+.quote{
+    border-left:3px solid #3b82f6;
+    padding-left:16px;
+    color:#94a3b8;
+    font-style:italic;
+    margin-top:10px;
+}
+.btn-group{
+    display:flex;gap:14px;flex-wrap:wrap;
+    margin-top:24px;
+}
+.btn{
+    padding:10px 22px;
+    border:1px solid #3b82f6;
+    color:#60a5fa;
+    text-decoration:none;
+    border-radius:4px;
+    transition:0.25s;
+}
+.btn:hover{background:#3b82f6;color:#0c0e14;}
+/* 通用区块 */
+section{padding:70px 0;}
+.section-head{margin-bottom:36px;}
+.section-head h2{font-size:28px;color:#ffffff;margin-bottom:8px;}
+.section-head p{color:#8892b0;}
+/* 作品卡片网格 */
+.work-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(320px,1fr));
+    gap:28px;
+}
+.work-card{
+    background:#141822;
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid #1f2533;
+}
+.card-img{
+    height:180px;
+    width:100%;
+    object-fit:cover;
+    background:#222836;
+    cursor:pointer;
+    transition:opacity 0.2s;
+}
+.card-img:hover{opacity:0.85;}
+.card-body{padding:20px;}
+.card-body h3{margin-bottom:8px;color:#fff;}
+.card-taglist{margin:10px 0;display:flex;flex-wrap:wrap;gap:8px;}
+.tag{
+    font-size:12px;
+    padding:3px 8px;
+    background:#1e293b;
+    color:#60a5fa;
+    border-radius:3px;
+}
+.card-body p{color:#94a3b8;font-size:14px;margin-bottom:14px;}
+/* ===== Lightbox弹窗大图样式 ===== */
+.lightbox{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    background:rgba(0,0,0,0.92);
+    z-index:9999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+}
+.lightbox.active{display:flex;}
+.lightbox-content{
+    max-width:90%;
+    max-height:90vh;
+}
+.lightbox-img{
+    width:auto;
+    height:auto;
+    max-width:100%;
+    max-height:85vh;
+    border-radius:4px;
+}
+.lightbox-close{
+    position:absolute;
+    top:20px;
+    right:30px;
+    color:#fff;
+    font-size:36px;
+    cursor:pointer;
+    user-select:none;
+}
+.lightbox-caption{
+    color:#cccccc;
+    text-align:center;
+    margin-top:14px;
+}
+/* 技能区域 */
+.skills-wrap{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:24px;
+}
+.skill-block h4{
+    color:#60a5fa;
+    margin-bottom:12px;
+    font-size:16px;
+}
+.skill-block ul{list-style:none;}
+.skill-block li{
+    padding:4px 0;
+    color:#b0b8cc;
+}
+/* 关于我 */
+.about-text p{
+    color:#b0b8cc;
+    margin-bottom:14px;
+    max-width:800px;
+}
+/* 联系区域 */
+.contact-info p{
+    padding:6px 0;
+    color:#b0b8cc;
+}
+.contact-info strong{color:#fff;margin-right:8px;}
+footer{
+    padding:40px 0;
+    border-top:1px solid #1f2533;
+    color:#64748b;
+    font-size:14px;
+}
+/* 移动端适配 */
+@media(max-width:640px){
+    .hero{min-height:auto;padding-top:40px;}
+    .btn-group{flex-direction:column;}
+    .work-grid{grid-template-columns:1fr;}
+    .lightbox-close{right:16px;font-size:28px;}
+}
+</style>
+</head>
+<body>
+<!-- 弹窗大图模块 -->
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <div class="lightbox-content">
+        <img id="lightbox-image" class="lightbox-img" alt="">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+</div>
+<div class="container">
+    <!-- Hero首页头部 -->
+    <div class="hero">
+        <div class="hero-tag">LUO JIAWEI · PORTFOLIO 2026</div>
+        <h1>用代码与三维<br>构建好玩的数字世界</h1>
+        <div class="hero-desc">
+我是罗嘉伟，专注游戏开发与三维虚拟内容创作。掌握 Unity 游戏开发，熟悉 3D 建模与角色动画整合，热衷移动端交互体验设计。正在寻找实习与合作机会，希望在真实项目中持续打磨技术与创作能力。
+        </div>
+        <div class="hero-meta">
+            <div class="meta-item">
+                <strong>当前状态</strong>
+                <span>开放实习 / 合作机会</span>
+            </div>
+            <div class="meta-item">
+                <strong>个人主页</strong>
+                <span>jiawei.dpdns.org</span>
+            </div>
+            <div class="meta-item">
+                <strong>主攻方向</strong>
+                <span>Unity 游戏开发 · 3D · 移动端交互</span>
+            </div>
+        </div>
+        <div class="quote">
+把每一个玩法原型做完整，就是对技术最好的练习。
+        </div>
+        <div class="btn-group">
+            <a href="#works" class="btn">浏览作品</a>
+            <a href="#contact" class="btn">联系我</a>
+        </div>
+    </div>
+    <!-- 作品区域 -->
+    <section id="works">
+        <div class="section-head">
+            <h2>主要作品</h2>
+            <p>游戏原型与三维建模实践项目（点击图片查看大图）</p>
+        </div>
+        <div class="work-grid">
+            <!-- 项目1：3D丧尸生存游戏 -->
+            <div class="work-card">
+                <img class="card-img" src="./images/zombie-demo.png" alt="3D俯视角丧尸生存游戏">
+                <div class="card-body">
+                    <h3>3D 俯视角丧尸生存游戏</h3>
+                    <div class="card-taglist">
+                        <span class="tag">Unity3D</span>
+                        <span class="tag">AI导航</span>
+                        <span class="tag">移动端适配</span>
+                    </div>
+                    <p>完整可玩的生存射击游戏：敌人 AI 追逐、布娃娃物理、武器系统、波次刷怪，并实现移动端虚拟摇杆与触控按键。</p>
+                </div>
+            </div>
+            <!-- 项目2：2D平台跳跃游戏 -->
+            <div class="work-card">
+                <img class="card-img" src="./images/2d-platformer.png" alt="2D Platformer 像素平台跳跃游戏">
+                <div class="card-body">
+                    <h3>2D Platformer 像素平台跳跃游戏</h3>
+                    <div class="card-taglist">
+                        <span class="tag">Unity2D</span>
+                        <span class="tag">像素游戏</span>
+                        <span class="tag">关卡设计</span>
+                    </div>
+                    <p>像素风格 2D 横版闯关游戏，包含菜单、关卡、陷阱、终点奖杯，实现角色移动、跳跃、碰撞检测等核心玩法。</p>
+                </div>
+            </div>
+            <!-- 项目3：太空引力闯关游戏 -->
+            <div class="work-card">
+                <img class="card-img" src="./images/space-game.png" alt="太空引力闯关小游戏">
+                <div class="card-body">
+                    <h3>太空引力闯关小游戏</h3>
+                    <div class="card-taglist">
+                        <span class="tag">Unity</span>
+                        <span class="tag">物理系统</span>
+                        <span class="tag">计分系统</span>
+                    </div>
+                    <p>太空主题引力玩法游戏，星球引力牵引小球，设置多关卡、分数统计，练习 Unity 物理引擎与 UI 分数面板开发。</p>
+                </div>
+            </div>
+            <!-- 项目4：西部开放场景Demo -->
+            <div class="work-card">
+                <img class="card-img" src="./images/west-scene.png" alt="西部风格开放场景Demo">
+                <div class="card-body">
+                    <h3>西部风格开放场景 Demo</h3>
+                    <div class="card-taglist">
+                        <span class="tag">Unity3D</span>
+                        <span class="tag">场景搭建</span>
+                        <span class="tag">角色动画</span>
+                    </div>
+                    <p>荒漠西部主题场景，导入牛仔角色资源，实现角色移动，练习地形、光照、角色资源整合。</p>
+                </div>
+            </div>
+            <!-- 项目5：科幻武器3D模型 -->
+            <div class="work-card">
+                <img class="card-img" src="./images/sci-fi-gun.png" alt="武器道具3D建模">
+                <div class="card-body">
+                    <h3>武器道具 3D 建模</h3>
+                    <div class="card-taglist">
+                        <span class="tag">3D建模</span>
+                        <span class="tag">布线拓扑</span>
+                        <span class="tag">道具设计</span>
+                    </div>
+                    <p>科幻风格武器模型制作，完成模型主体结构、布线、线框拓扑，掌握硬表面建模流程。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 技能储备 -->
+    <section id="skills">
+        <div class="section-head">
+            <h2>技能储备</h2>
+            <p>持续打磨的技术能力</p>
+        </div>
+        <div class="skills-wrap">
+            <div class="skill-block">
+                <h4>游戏引擎</h4>
+                <ul>
+                    <li>Unity 2D/3D 游戏开发</li>
+                    <li>角色动画、AI、物理系统</li>
+                    <li>场景搭建与资源整合</li>
+                </ul>
+            </div>
+            <div class="skill-block">
+                <h4>移动端开发</h4>
+                <ul>
+                    <li>虚拟摇杆 / 触控按键 UI</li>
+                    <li>WebGL 与移动端适配</li>
+                    <li>纯代码生成 UI 与交互</li>
+                </ul>
+            </div>
+            <div class="skill-block">
+                <h4>三维与美术</h4>
+                <ul>
+                    <li>3D 道具建模与拓扑</li>
+                    <li>URP 材质与贴图流程</li>
+                    <li>Mixamo 角色动画整合</li>
+                </ul>
+            </div>
+            <div class="skill-block">
+                <h4>其他</h4>
+                <ul>
+                    <li>关卡设计、原型 Demo 制作</li>
+                    <li>版本管理与自动化脚本</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- 关于我 -->
+    <section id="about">
+        <div class="section-head">
+            <h2>关于我</h2>
+        </div>
+        <div class="about-text">
+            <p>我是罗嘉伟，对游戏开发、三维虚拟世界和交互体验设计抱有浓厚兴趣。</p>
+            <p>独立完成过多款 Unity 游戏原型，从 2D 像素闯关到 3D 俯视角生存射击，覆盖玩法逻辑、敌人 AI、UI 系统与移动端触控适配；同时持续练习角色模型整合、动画重定向与材质流程。</p>
+            <p>目前正在寻找实习与合作机会，希望加入团队参与真实项目，进一步提升游戏开发与三维创作综合能力。</p>
+        </div>
+    </section>
+    <!-- 联系我 -->
+    <section id="contact">
+        <div class="section-head">
+            <h2>联系我聊聊</h2>
+            <p>欢迎交流实习、合作与技术相关机会</p>
+        </div>
+        <div class="contact-info">
+            <p><strong>电话：</strong>17711523212</p>
+            <p><strong>QQ：</strong>2998637924</p>
+            <p><strong>主页：</strong>jiawei.dpdns.org</p>
+        </div>
+    </section>
+    <footer>
+        <p>罗嘉伟 · LUO JIAWEI · PORTFOLIO｜游戏开发 / 3D / 虚拟现实作品集｜jiawei.dpdns.org</p>
+    </footer>
+</div>
+<script>
+// Lightbox弹窗逻辑
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-image');
+const lightboxCaption = document.getElementById('lightbox-caption');
+const closeBtn = document.querySelector('.lightbox-close');
+const cardImages = document.querySelectorAll('.card-img');
+// 打开弹窗
+cardImages.forEach(img=>{
+    img.addEventListener('click',function(){
+        lightboxImg.src = this.src;
+        lightboxImg.alt = this.alt;
+        lightboxCaption.textContent = this.alt;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden'; //禁止背景滚动
+    })
+})
+//关闭弹窗函数
+function closeLightbox(){
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+}
+//点击X关闭
+closeBtn.addEventListener('click',closeLightbox);
+//点击遮罩背景关闭
+lightbox.addEventListener('click',function(e){
+    if(e.target === lightbox){
+        closeLightbox();
+    }
+})
+//按ESC按键关闭
+document.addEventListener('keydown',function(e){
+    if(e.key === 'Escape' && lightbox.classList.contains('active')){
+        closeLightbox();
+    }
+})
+</script>
+</body>
+</html>
